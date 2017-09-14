@@ -7,6 +7,7 @@ package br.edu.ifsul.dao;
 
 import br.edu.ifsul.jpa.EntityManagerUtil;
 import br.edu.ifsul.modelo.Cidade;
+import br.edu.ifsul.modelo.Grupo;
 import br.edu.ifsul.modelo.Marca;
 import br.edu.ifsul.util.Util;
 import java.util.List;
@@ -16,20 +17,20 @@ import javax.persistence.EntityManager;
  *
  * @author Renato
  */
-public class MarcaDAO {
+public class GrupoDAO {
 
     private String mensagem = "";
     private EntityManager em;
 
-    public MarcaDAO() {
+    public GrupoDAO() {
         em = EntityManagerUtil.getEntityManager();
     }
 
-    public List<Marca> getLista() {
-        return em.createQuery("from Marca order by nome").getResultList();
+    public List<Grupo> getLista() {
+        return em.createQuery("from Grupo order by nome").getResultList();
     }
 
-    public boolean salvar(Marca obj) {
+    public boolean salvar(Grupo obj) {
         try {
             em.getTransaction().begin();
             if (obj.getId() == null) {
@@ -50,7 +51,7 @@ public class MarcaDAO {
         }
     }
 
-    public boolean remover(Marca obj) {
+    public boolean remover(Grupo obj) {
         try {
             em.getTransaction().begin();
             em.remove(obj);
@@ -67,8 +68,8 @@ public class MarcaDAO {
         }
     }
 
-    public Marca localizar(Integer id) {
-        return em.find(Marca.class, id);
+    public Grupo localizar(Integer id) {
+        return em.find(Grupo.class, id);
     }
 
     public String getMensagem() {

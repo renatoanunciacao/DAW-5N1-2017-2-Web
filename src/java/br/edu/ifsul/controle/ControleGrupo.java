@@ -5,8 +5,10 @@
  */
 package br.edu.ifsul.controle;
 
+import br.edu.ifsul.dao.GrupoDAO;
 import br.edu.ifsul.dao.MarcaDAO;
 import br.edu.ifsul.modelo.Cidade;
+import br.edu.ifsul.modelo.Grupo;
 import br.edu.ifsul.modelo.Marca;
 import br.edu.ifsul.util.Util;
 import javax.faces.bean.ManagedBean;
@@ -16,23 +18,23 @@ import javax.faces.bean.SessionScoped;
  *
  * @author Renato
  */
-@ManagedBean(name = "controleMarca")
+@ManagedBean(name = "controleGrupo")
 @SessionScoped
-public class ControleMarca {
+public class ControleGrupo {
     
-    private MarcaDAO dao;
-    private Marca objeto;
+    private GrupoDAO dao;
+    private Grupo objeto;
     
-    public ControleMarca(){
-        dao = new MarcaDAO();
+    public ControleGrupo(){
+        dao = new GrupoDAO();
     }
     
      public String listar(){
-        return "/privado/marca/listar?faces-redirect=true";
+        return "/privado/grupo/listar?faces-redirect=true";
     }
     
     public String novo(){
-        objeto = new Marca();
+        objeto = new Grupo();
         return "formulario?faces-redirect=true";
     }
     
@@ -64,19 +66,19 @@ public class ControleMarca {
         }
     }
 
-    public MarcaDAO getDao() {
+    public GrupoDAO getDao() {
         return dao;
     }
 
-    public void setDao(MarcaDAO dao) {
+    public void setDao(GrupoDAO dao) {
         this.dao = dao;
     }
 
-    public Marca getObjeto() {
+    public Grupo getObjeto() {
         return objeto;
     }
 
-    public void setObjeto(Marca objeto) {
+    public void setObjeto(Grupo objeto) {
         this.objeto = objeto;
     }
 }

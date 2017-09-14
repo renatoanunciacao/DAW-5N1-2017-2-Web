@@ -5,9 +5,8 @@
  */
 package br.edu.ifsul.controle;
 
-import br.edu.ifsul.dao.MarcaDAO;
-import br.edu.ifsul.modelo.Cidade;
-import br.edu.ifsul.modelo.Marca;
+import br.edu.ifsul.dao.ProdutoDAO;
+import br.edu.ifsul.modelo.Produto;
 import br.edu.ifsul.util.Util;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -16,23 +15,23 @@ import javax.faces.bean.SessionScoped;
  *
  * @author Renato
  */
-@ManagedBean(name = "controleMarca")
+@ManagedBean(name = "controleProduto")
 @SessionScoped
-public class ControleMarca {
+public class ControleProduto {
+    private ProdutoDAO dao;
+    private Produto objeto;
     
-    private MarcaDAO dao;
-    private Marca objeto;
     
-    public ControleMarca(){
-        dao = new MarcaDAO();
+    public ControleProduto(){
+        dao = new ProdutoDAO();
     }
     
-     public String listar(){
-        return "/privado/marca/listar?faces-redirect=true";
+    public String listar(){
+        return "/privado/produto/listar?faces-redirect=true";
     }
     
     public String novo(){
-        objeto = new Marca();
+        objeto = new Produto();
         return "formulario?faces-redirect=true";
     }
     
@@ -64,19 +63,23 @@ public class ControleMarca {
         }
     }
 
-    public MarcaDAO getDao() {
+    
+
+    public ProdutoDAO getDao() {
         return dao;
     }
 
-    public void setDao(MarcaDAO dao) {
+    public void setDao(ProdutoDAO dao) {
         this.dao = dao;
     }
 
-    public Marca getObjeto() {
+    public Produto getObjeto() {
         return objeto;
     }
 
-    public void setObjeto(Marca objeto) {
+    public void setObjeto(Produto objeto) {
         this.objeto = objeto;
     }
+    
+    
 }

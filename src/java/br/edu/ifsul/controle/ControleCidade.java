@@ -5,10 +5,11 @@
  */
 package br.edu.ifsul.controle;
 
-import br.edu.ifsul.dao.MarcaDAO;
+import br.edu.ifsul.dao.CidadeDAO;
+import br.edu.ifsul.dao.EstadoDAO;
 import br.edu.ifsul.modelo.Cidade;
-import br.edu.ifsul.modelo.Marca;
 import br.edu.ifsul.util.Util;
+import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -16,23 +17,25 @@ import javax.faces.bean.SessionScoped;
  *
  * @author Renato
  */
-@ManagedBean(name = "controleMarca")
+@ManagedBean(name = "controleCidade")
 @SessionScoped
-public class ControleMarca {
+public class ControleCidade implements Serializable{
+
+    private CidadeDAO dao;
+    private Cidade objeto;
+    private EstadoDAO daoEstado;
     
-    private MarcaDAO dao;
-    private Marca objeto;
-    
-    public ControleMarca(){
-        dao = new MarcaDAO();
+    public ControleCidade() {
+        dao = new CidadeDAO();
+        daoEstado = new EstadoDAO();
     }
-    
-     public String listar(){
-        return "/privado/marca/listar?faces-redirect=true";
+
+    public String listar(){
+        return "/privado/cidade/listar?faces-redirect=true";
     }
     
     public String novo(){
-        objeto = new Marca();
+        objeto = new Cidade();
         return "formulario?faces-redirect=true";
     }
     
@@ -63,20 +66,28 @@ public class ControleMarca {
             Util.mensagemErro(dao.getMensagem());
         }
     }
-
-    public MarcaDAO getDao() {
+    
+    public CidadeDAO getDao() {
         return dao;
     }
 
-    public void setDao(MarcaDAO dao) {
+    public void setDao(CidadeDAO dao) {
         this.dao = dao;
     }
 
-    public Marca getObjeto() {
+    public Cidade getObjeto() {
         return objeto;
     }
 
-    public void setObjeto(Marca objeto) {
+    public void setObjeto(Cidade objeto) {
         this.objeto = objeto;
+    }
+
+    public EstadoDAO getDaoEstado() {
+        return daoEstado;
+    }
+
+    public void setDaoEstado(EstadoDAO daoEstado) {
+        this.daoEstado = daoEstado;
     }
 }

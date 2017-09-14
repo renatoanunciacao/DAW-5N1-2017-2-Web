@@ -7,8 +7,8 @@ package br.edu.ifsul.dao;
 
 import br.edu.ifsul.jpa.EntityManagerUtil;
 import br.edu.ifsul.modelo.Cidade;
-import br.edu.ifsul.modelo.Marca;
 import br.edu.ifsul.util.Util;
+import java.io.Serializable;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -16,20 +16,20 @@ import javax.persistence.EntityManager;
  *
  * @author Renato
  */
-public class MarcaDAO {
+public class CidadeDAO implements Serializable {
 
     private String mensagem = "";
     private EntityManager em;
 
-    public MarcaDAO() {
+    public CidadeDAO() {
         em = EntityManagerUtil.getEntityManager();
     }
 
-    public List<Marca> getLista() {
-        return em.createQuery("from Marca order by nome").getResultList();
+    public List<Cidade> getLista() {
+        return em.createQuery("from Cidade order by nome").getResultList();
     }
 
-    public boolean salvar(Marca obj) {
+    public boolean salvar(Cidade obj) {
         try {
             em.getTransaction().begin();
             if (obj.getId() == null) {
@@ -50,7 +50,7 @@ public class MarcaDAO {
         }
     }
 
-    public boolean remover(Marca obj) {
+    public boolean remover(Cidade obj) {
         try {
             em.getTransaction().begin();
             em.remove(obj);
@@ -66,9 +66,9 @@ public class MarcaDAO {
             return false;
         }
     }
-
-    public Marca localizar(Integer id) {
-        return em.find(Marca.class, id);
+    
+    public Cidade localizar(Integer id){
+        return em.find(Cidade.class, id);
     }
 
     public String getMensagem() {
