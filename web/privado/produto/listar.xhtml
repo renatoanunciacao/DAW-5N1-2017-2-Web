@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
    <ui:composition template="/templates/template.xhtml">
         <ui:define name="titulo">Listagem de Produtos</ui:define>
         <ui:define name="conteudo">
@@ -23,13 +24,14 @@
                     <p:outputLabel value="#{obj.descricao}"/>
                 </p:column>
                  <p:column headerText="Preço">
-                     <p:outputLabel value="#{obj.preco}"/>
+                     <p:outputLabel  value="#{obj.preco}"/>
+                    
                 </p:column>
                  <p:column headerText="Estoque">
                      <p:outputLabel value="#{obj.estoque}"/>
                 </p:column>
                  <p:column headerText="Marca">
-                     <p:outputLabel value="#{obj.marca.nome}"/>
+                     <p:outputLabel value="#{obj.marca.nome}" />
                 </p:column>
                  <p:column headerText="Grupo">
                      <p:outputLabel value="#{obj.grupo.nome}"/>

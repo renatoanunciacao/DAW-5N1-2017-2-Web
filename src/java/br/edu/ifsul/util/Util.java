@@ -19,7 +19,7 @@ public class Util {
             e = (Exception) e.getCause();
         }
         String retorno = e.getMessage();
-        if (retorno.contains("viola restrição de cave estrangeira")) {
+        if (retorno.contains("viola restrição de chave estrangeira")) {
             retorno = "Registro não pode ser excluído por possuir referência em outros objetos";
         }
         return retorno;

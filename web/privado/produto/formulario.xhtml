@@ -24,20 +24,21 @@
                         </div>
                     </f:facet>
 
-                    <p:outputLabel value="ID"/>
-                    <p:inputText value="#{controleProduto.objeto.id}" size="5" readonly="true"/>
+                    <p:outputLabel value="ID" rendered="#{controleProduto.objeto.id != null}"/>
+                    <p:inputText value="#{controleProduto.objeto.id}" size="5" readonly="true"
+                                 rendered="#{controleProduto.objeto.id != null}"/>
 
                     <p:outputLabel value="Nome" for="txtNome"/>
                     <p:inputText id="txtNome" value="#{controleProduto.objeto.nome}" size="40" maxlength="40" placeholder="Obrigatório"/>
 
                     <p:outputLabel value="Descrição" for="txtDescricao"/>
-                    <p:inputText id="txtDescricao" value="#{controleProduto.objeto.descricao}"/>
+                    <p:inputTextarea id="txtDescricao" autoResize="false"  value="#{controleProduto.objeto.descricao}" />
 
                     <p:outputLabel value="Preço" for="txtPreco"/>
-                    <p:inputNumber id="txtPreco" value="#{controleProduto.objeto.preco}" decimalSeparator="." thousandSeparator="" symbol="R$"/>
-
+                    <p:inputNumber id="txtPreco" value="#{controleProduto.objeto.preco}" decimalSeparator="." thousandSeparator="" symbol="R$ " placeholder="Obrigatório"/>
+                    
                     <p:outputLabel value="Estoque" for="txtEstoque"/>
-                    <p:inputNumber id="txtEstoque" value="#{controleProduto.objeto.estoque}" decimalSeparator="." thousandSeparator="" symbol="R$"/>
+                    <p:inputNumber id="txtEstoque" value="#{controleProduto.objeto.estoque}" decimalSeparator="." thousandSeparator="" placeholder="Obrigatório"/>
 
                     <p:outputLabel value="Marca" for="selectMarca"/>
                     <p:selectOneMenu id="selectMarca" value="#{controleProduto.objeto.marca}">
