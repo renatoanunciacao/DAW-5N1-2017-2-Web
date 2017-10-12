@@ -21,12 +21,12 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class ControleCidade implements Serializable{
 
-    private CidadeDAO dao;
+    private CidadeDAO<Cidade> dao;
     private Cidade objeto;
     private EstadoDAO daoEstado;
     
     public ControleCidade() {
-        dao = new CidadeDAO();
+        dao = new CidadeDAO<>();
         daoEstado = new EstadoDAO();
     }
 
@@ -40,7 +40,13 @@ public class ControleCidade implements Serializable{
     }
     
     public String salvar(){
-        if(dao.salvar(objeto)){
+        boolean persistiu;
+        if(objeto.getId() == null){
+            persistiu = dao.persist(objeto);
+        }else{
+            persistiu = dao.merge(objeto);
+        }
+        if(persistiu){
             Util.mensagemInformacao(dao.getMensagem());
             return "listar?faces-redirect=true";
         }else{

@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/template.xhtml">
         <ui:define name="titulo">Listagem de Cidades</ui:define>
         <ui:define name="conteudo">
@@ -11,9 +12,44 @@
                 <p:messages/>
                 <p:growl/>
                 <p:commandButton value="Novo" action="#{controleCidade.novo()}" ajax="false" icon="ui-icon-plus"/>
-
-                <p:dataTable value="#{controleCidade.dao.lista}" var="obj">
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem: "/>
+                        <p:selectOneMenu value="#{controleCidade.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>
+                            <f:selectItem itemLabel="Nome" itemValue="nome"/>
+                            <f:selectItem itemLabel="Estado" itemValue="estado.nome"/>
+                            <p:ajax update="listagem" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro: "/>
+                        <p:inputText value="#{controleCidade.dao.filtro}" size="20">
+                            <p:ajax update="listagem" event="blur"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" icon="ui-icon-search"
+                                         update="listagem"/>
+                         <p:commandButton value="Primeiro"
+                                          actionListener="#{controleCidade.dao.primeiro()}"
+                                         update="listagem"
+                                         icon="ui-icon-seek-first"/>
+                        <p:commandButton value="Anterior"
+                                         actionListener="#{controleCidade.dao.anterior()}"
+                                         update="listagem" 
+                                         icon="ui-icon-seek-prev"/>                        
+                        <p:commandButton value="Próximo"
+                                         actionListener="#{controleCidade.dao.proximo()}"
+                                         update="listagem"
+                                         icon="ui-icon-seek-next"/>  
+                        <p:commandButton value="Último"
+                                         actionListener="#{controleCidade.dao.ultimo()}"
+                                         update="listagem" 
+                                         icon="ui-icon-seek-end"/>   
+                    </p:panelGrid>
+                </div>
+                <p:dataTable value="#{controleCidade.dao.listaObjetos}" var="obj" id="listagem">
                     <!-- comentario -->
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controleCidade.dao.mensagemNavegacao}"/>
+                    </f:facet>
                     <p:column headerText="ID">
                         <p:outputLabel value="#{obj.id}"/>
                     </p:column>
@@ -23,7 +59,7 @@
                     <p:column headerText="Estado">
                         <p:outputLabel value="#{obj.estado.nome}"/>
                     </p:column>
-                     <p:column headerText="UF">
+                    <p:column headerText="UF">
                         <p:outputLabel value="#{obj.estado.uf}"/>
                     </p:column>
                     <p:column headerText="Ações">
@@ -33,6 +69,7 @@
                                         return false"/>
                         </div>
                     </p:column>
+                    
                 </p:dataTable>
             </h:form>
         </ui:define>
