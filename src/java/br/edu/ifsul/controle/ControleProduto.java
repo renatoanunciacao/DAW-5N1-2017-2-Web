@@ -18,52 +18,56 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean(name = "controleProduto")
 @SessionScoped
 public class ControleProduto {
-    private ProdutoDAO dao;
+
+    private ProdutoDAO<Produto> dao;
     private Produto objeto;
-    
-    
-    public ControleProduto(){
+
+    public ControleProduto() {
         dao = new ProdutoDAO();
     }
-    
-    public String listar(){
+
+    public String listar() {
         return "/privado/produto/listar?faces-redirect=true";
     }
-    
-    public String novo(){
+
+    public String novo() {
         objeto = new Produto();
         return "formulario?faces-redirect=true";
     }
-    
-    public String salvar(){
-        if(dao.salvar(objeto)){
+
+    public String salvar() {
+        boolean persistiu;
+        if (objeto.getId() == null) {
+            persistiu = dao.persist(objeto);
+        } else {
+            persistiu = dao.merge(objeto);
+        }
+        if (persistiu) {
             Util.mensagemInformacao(dao.getMensagem());
             return "listar?faces-redirect=true";
-        }else{
+        } else {
             Util.mensagemErro(dao.getMensagem());
             return "formulario?faces-redirect=true";
         }
     }
-    
-    public String cancelar(){
+
+    public String cancelar() {
         return "listar?faces-redirect=true";
     }
-    
-    public String editar(Integer id){
+
+    public String editar(Integer id) {
         objeto = dao.localizar(id);
         return "formulario?faces-redirect=true";
     }
-    
-    public void remover(Integer id){
+
+    public void remover(Integer id) {
         objeto = dao.localizar(id);
-        if(dao.remover(objeto)){
+        if (dao.remover(objeto)) {
             Util.mensagemInformacao(dao.getMensagem());
-        }else{
+        } else {
             Util.mensagemErro(dao.getMensagem());
         }
     }
-
-    
 
     public ProdutoDAO getDao() {
         return dao;
@@ -80,6 +84,5 @@ public class ControleProduto {
     public void setObjeto(Produto objeto) {
         this.objeto = objeto;
     }
-    
-    
+
 }

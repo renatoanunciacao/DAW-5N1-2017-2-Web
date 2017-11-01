@@ -1,0 +1,209 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo">Listagem de Usuários</ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem">
+                <p:messages/>
+                <p:growl/>
+                <p:commandButton value="Novo"
+                                 actionListener="#{controleUsuario.novo()}" 
+                                 icon="ui-icon-plus"
+                                 process="@this" update=":formEdicao"
+                                 oncomplete="PF('dlg').show();" />
+                <div align="center">
+                    <p:panelGrid columns="13">
+                        <p:outputLabel value="Ordem: "/>
+                        <p:selectOneMenu value="#{controleUsuario.dao.ordem}">
+                            <f:selectItem itemLabel="ID" itemValue="id"/>
+                            <f:selectItem itemLabel="Nome" itemValue="nome"/>
+                            <f:selectItem itemLabel="CPF" itemValue="cpf"/>
+                            <f:selectItem itemLabel="Cidade" itemValue="cidade.nome"/>
+                            <p:ajax update="listagem" />
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro: "/>
+                        <p:inputText value="#{controleUsuario.dao.filtro}" size="20">
+                            <p:ajax update="listagem" event="blur"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" icon="ui-icon-search"
+                                         update="listagem"/>
+                        <p:commandButton value="Primeiro"
+                                         actionListener="#{controleUsuario.dao.primeiro()}"
+                                         update="listagem"
+                                         icon="ui-icon-seek-first"/>
+                        <p:commandButton value="Anterior"
+                                         actionListener="#{controleUsuario.dao.anterior()}"
+                                         update="listagem" 
+                                         icon="ui-icon-seek-prev"/>                        
+                        <p:commandButton value="Próximo"
+                                         actionListener="#{controleUsuario.dao.proximo()}"
+                                         update="listagem"
+                                         icon="ui-icon-seek-next"/>  
+                        <p:commandButton value="Último"
+                                         actionListener="#{controleUsuario.dao.ultimo()}"
+                                         update="listagem" 
+                                         icon="ui-icon-seek-end"/>   
+                    </p:panelGrid>
+
+                </div>
+
+                <p:dataTable value="#{controleUsuario.dao.listaObjetos}" var="obj" id="listagem">
+                    <!-- comentario -->
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controleUsuario.dao.mensagemNavegacao}"/>
+                    </f:facet>
+                    <p:column headerText="ID">
+                        <p:outputLabel value="#{obj.id}"/>
+                    </p:column>
+                    <p:column headerText="Apelido">
+                        <p:outputLabel value="#{obj.apelido}"/>
+                    </p:column>
+                    <p:column headerText="Nascimento">
+                        <p:outputLabel value="#{obj.nascimento}">
+                        
+                        </p:outputLabel>
+                    </p:column>
+
+                    <p:column headerText="Ativo">
+                        <p:outputLabel value="#{obj.ativo}"/>
+                    </p:column>
+                    <p:column headerText="Ações">
+                        <div align="center">
+                            <p:commandButton actionListener="#{controleUsuario.editar(obj.id)}" icon="ui-icon-pencil" 
+                                             title="Editar" update=":formEdicao" process="@this"
+                                             oncomplete="PF('dlg').show();"/>
+                            <p:commandButton action="#{controleUsuario.remover(obj.id)}" icon="ui-icon-trash" title="Remover" process="@form" update="@form" onclick="if (!confirm('Confirma a exclusão?'))
+                                        return false"/>
+                        </div>
+                    </p:column>
+
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+        <ui:define name="dialogos">
+            <p:dialog header="Edição de Usuários" widgetVar="dlg"
+                      resizable="false" modal="true" width="550" height="480">
+                <h:form id="formEdicao">
+                    <p:growl id="growl"/>
+                    <p:tabView id="tab">
+                        <p:tab title="Dados principais">
+                            <div align="center">
+                                <p:panelGrid columns="2">
+                                    <f:facet name="footer">
+                                        <div align="center">
+                                            <p:commandButton actionListener="#{controleUsuario.salvar()}"
+                                                             update=":formListagem :formEdicao"
+                                                             value="Salvar" icon="ui-icon-disk"
+                                                             oncomplete="if (!args.validationFailed){ PF('dlg').hide();}"/>
+                                        </div>
+                                    </f:facet>
+                                    <p:outputLabel value="ID"/>
+                                    <p:inputText value="#{controleUsuario.objeto.id}" size="5" readonly="true"/>
+                                    <p:outputLabel value="Nome" for="txtNome"/>
+                                    <p:inputText id="txtNome" value="#{controleUsuario.objeto.nome}" size="50"
+                                                 maxlength="50" placeholder="Obrigatório"/>
+                                    <p:outputLabel value="Endereço" for="txtEndereco"/>
+                                    <p:inputText id="txtEndereco" value="#{controleUsuario.objeto.endereco}" size="50"
+                                                 maxlength="50" placeholder="Obrigatório"/>
+                                    <p:outputLabel value="Bairro" for="txtBairro"/>
+                                    <p:inputText id="txtBairro" value="#{controleUsuario.objeto.bairro}" size="30"
+                                                 maxlength="30" placeholder="Obrigatório"/>
+                                    <p:outputLabel value="CEP" for="txtCEP"/>
+                                    <p:inputMask id="txtCEP" value="#{controleUsuario.objeto.cep}" mask="99999-999" size="10"/>
+                                    <p:outputLabel value="Complemento" for="txtComplemento"/>
+                                    <p:inputText id="txtComplemento" value="#{controleUsuario.objeto.complemento}" size="30"
+                                                 maxlength="30" placeholder="Obrigatório"/>
+                                    <p:outputLabel value="Email" for="txtEmail"/>
+                                    <p:inputText id="txtEmail" value="#{controleUsuario.objeto.email}" size="50"
+                                                 maxlength="50" placeholder="Obrigatório"/>
+                                    <p:outputLabel value="RG" for="txtRG"/>
+                                    <p:inputMask id="txtRG" value="#{controleUsuario.objeto.rg}"
+                                                 mask="9999999999" size="10" />
+                                    <p:outputLabel value="CPF" for="txtCPF"/>
+                                    <p:inputMask id="txtCPF" value="#{controleUsuario.objeto.cpf}"
+                                                 mask="999.999.999-99" size="14" />
+                                    <p:outputLabel value="Nascimento" for="txtNascimento"/>
+                                    <p:calendar id="txtNascimento" value="#{controleUsuario.objeto.nascimento}"
+                                                mask="true" pattern="dd/MM/yyyy" navigator="true">
+                                        <f:converter converterId="converterCalendar"/>
+                                    </p:calendar>
+                                    <p:outputLabel value="Cidade" for="selectCidade"/>
+                                    <p:selectOneMenu id="selectCidade" value="#{controleUsuario.objeto.cidade}">
+                                        <f:converter converterId="converterCidade"/>
+                                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um registro"/>
+                                        <f:selectItems value="#{controlePessoaFisica.daoCidade.listaTodos}"
+                                                       var="c" itemLabel="#{c.nome}"/>
+                                    </p:selectOneMenu> 
+                                    <p:outputLabel value="Apelido" for="txtApelido"/>
+                                    <p:inputText id="txtApelido" value="#{controleUsuario.objeto.apelido}" size="50"
+                                                 maxlength="50" placeholder="Obrigatório"/>
+                                    <p:outputLabel value="Senha" for="txtSenha"/>
+                                    <p:inputText id="txtSenha" value="#{controleUsuario.objeto.senha}" size="50"
+                                                 maxlength="50" type="password" placeholder="Obrigatório"/>
+                                </p:panelGrid>
+                            </div>
+                        </p:tab>
+                        <p:tab title="Acessos">
+                            <p:dataTable value="#{controleUsuario.objeto.acessos}"
+                                         var="ace" rowIndexVar="idx" id="listaAcessos">
+                                <f:facet name="header">
+                                    <p:commandButton value="Novo Acesso" actionListener="#{controleUsuario.novoAcesso()}"
+                                                     update=":formAcesso" icon="ui-icon-plus"
+                                                     id="btnNovoAcesso" process="btnNovoAcesso"
+                                                     oncomplete="PF('dlgAcesso').show();"/>
+                                </f:facet>
+                                <p:column headerText="Apelido">
+                                    <p:outputLabel value="#{ace.apelido}"/>
+                                </p:column>
+                                <p:column headerText="Ativo">
+                                    <p:outputLabel value="#{ace.ativo}"/>
+                                </p:column>
+                                <p:column headerText="Administrador">
+                                    <p:outputLabel value="#{ace.administrador}"/>
+                                </p:column>
+                                <p:column headerText="Ações">
+                                    <div align="center">
+                                        <p:commandButton actionListener="#{controleUsuario.alterarAcesso(index)}"
+                                                         update=":formAcesso" process="@this" icon="ui-icon-pencil"
+                                                         oncomplete="PF('dlgAcesso').show();"/>
+                                        <p:commandButton icon="ui-icon-trash" actionListener="#{controleUsuario.removerAcesso(index)}"
+                                                         update="listaAcessos :formEdicao:growl"
+                                                         process="@this"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+
+                </h:form>
+            </p:dialog>
+            <p:dialog header="Edição de Acessos" widgetVar="dlgAcesso" modal="true" resizable="false">
+                <h:form id="formAcesso">
+                    <p:growl/>
+                    <p:panelGrid columns="2">
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton value="Salvar Acesso"
+                                                 icon="ui-icon-disk"
+                                                 actionListener="#{controleUsuario.salvarAcesso()}"
+                                                 update=":formEdicao:tab:listaAcessos formAcesso"
+                                                 process="@form"
+                                                 oncomplete="if (!args.validationFailed){PF('dlgAcesso').hide();}"/>
+                            </div>
+                        </f:facet>
+                        <p:outputLabel value="Apelido" for="txtNumero"/>
+                        <p:inputText id="txtNumero" value="#{controleUsuario.objeto.apelido}" size="20" maxlength="20" />
+                        <p:outputLabel value="Senha" for="txtSenha"/>
+                        <p:inputText id="txtSenha" value="#{controleUsuario.objeto.senha}" type="password" size="20" maxlength="20"/>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+

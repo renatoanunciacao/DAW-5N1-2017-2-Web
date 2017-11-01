@@ -5,22 +5,19 @@
  */
 package br.edu.ifsul.dao;
 
-import br.edu.ifsul.jpa.EntityManagerUtil;
-import br.edu.ifsul.modelo.Produto;
-import br.edu.ifsul.util.Util;
+import br.edu.ifsul.modelo.PessoaFisica;
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.EntityManager;
 
 /**
  *
  * @author Renato
  */
-public class ProdutoDAO<T> extends DAOGenerico<Produto> implements Serializable{
+public class PessoaFisicaDAO<T> extends DAOGenerico<PessoaFisica> implements Serializable {
 
-    public ProdutoDAO(){
+    public PessoaFisicaDAO() {
         super();
-        classePersistente = Produto.class;
+        classePersistente = PessoaFisica.class;
         ordem = "nome";
     }
+
 }
