@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/template.xhtml">
+        <ui:define name="titulo"> Listagem de Parcelas </ui:define>
+        <ui:define name="conteudo">
+            <h:form id="formListagem" prependId="false">
+                <p:growl id="growl"/>
+                <div align="center">
+                    <p:panelGrid columns="11">
+                        <p:outputLabel value="Ordem:"/>
+                        <p:selectOneMenu value="#{controleParcela.dao.ordem}">
+                            <f:selectItem itemLabel="Valor" itemValue="valor"/>                            
+                            <f:selectItem itemLabel="Vencimento" itemValue="vencimento"/>
+                            <p:ajax update="listagem"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="Filtro: "/>
+                        <p:inputText value="#{controleParcela.dao.filtro}">
+                            <p:ajax event="keyup" update="listagem"/>
+                        </p:inputText>
+                        <p:commandButton value="Filtrar" update="listagem"/>
+                        <p:outputLabel value="Máximo de objetos"/>
+                        <p:inputText value="#{controleParcela.dao.maximoObjetos}" size="5">
+                            <p:ajax event="keyup" update="listagem"/>
+                        </p:inputText>
+                        <p:commandButton action="#{controleParcela.dao.primeiro()}"
+                                         value="Primeiro" update="listagem"
+                                         icon="ui-icon-seek-first"/>
+                        <p:commandButton action="#{controleParcela.dao.anterior()}"
+                                         value="Anterior" update="listagem"
+                                         icon="ui-icon-seek-prev"/>
+                        <p:commandButton action="#{controleParcela.dao.proximo()}"
+                                         value="Próximo" update="listagem"
+                                         icon="ui-icon-seek-next"/>
+                        <p:commandButton action="#{controleParcela.dao.ultimo()}"
+                                         value="Ultimo" update="listagem"
+                                         icon="ui-icon-seek-end"/>
+                    </p:panelGrid>
+                </div>
+                <p:dataTable value="#{controleParcela.dao.listaObjetos}" var="obj"
+                             id="listagem">
+                    <f:facet name="header">
+                        <p:outputLabel value="Listagem de Parcelas"/>
+                    </f:facet>
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{controleParcela.dao.mensagemNavegacao}"/>
+                    </f:facet>
+                   <p:column headerText="Numero">
+                        <p:outputLabel value="#{obj.parcelaID.numero}"/>
+                    </p:column> 
+                    <p:column headerText="Valor">
+                        <p:outputLabel value="#{obj.valor}"/>
+                    </p:column>
+                    <p:column headerText="Vencimento">
+                        <p:outputLabel value="#{obj.vencimento}">
+                            <f:converter  converterId="converterCalendar"/>
+                        </p:outputLabel>
+                    </p:column>                    
+                                       
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

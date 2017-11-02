@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 /**
  *
  * @author Renato
+ * @param <T>
  */
 public class ProdutoDAO<T> extends DAOGenerico<Produto> implements Serializable{
 

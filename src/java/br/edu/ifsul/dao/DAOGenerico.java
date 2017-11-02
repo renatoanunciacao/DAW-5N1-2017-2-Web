@@ -21,9 +21,9 @@ public class DAOGenerico<T> {
     protected EntityManager em;
     protected Class classePersistente;
     protected String mensagem = "";
-    protected String ordem = "id";
+    protected String ordem = "";
     protected String filtro = "";
-    protected Integer maximoObjetos = 3;
+    protected Integer maximoObjetos = 5;
     protected Integer posicaoAtual = 0;
     protected Integer totalObjetos = 0;
 

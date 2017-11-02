@@ -12,6 +12,7 @@ import br.edu.ifsul.dao.ProdutoDAO;
 import br.edu.ifsul.dao.UsuarioDAO;
 import br.edu.ifsul.dao.VendaDAO;
 import br.edu.ifsul.modelo.Cidade;
+import br.edu.ifsul.modelo.Parcela;
 import br.edu.ifsul.modelo.PessoaFisica;
 import br.edu.ifsul.modelo.Produto;
 import br.edu.ifsul.modelo.Telefone;
@@ -72,9 +73,22 @@ public class ControleVenda implements Serializable {
     }
 
     public void gerarParcelas(){
-        objeto.getListaParcelas().clear();
-        objeto.getParcelas();
-        
+        Boolean temPagamento = false;
+        for (Parcela p : objeto.getListaParcelas()) {
+            if (p.getDataPagamento() != null  || p.getValorPago() != null) {
+                temPagamento = true;
+                break;
+            }
+        }
+        if (temPagamento) {
+            Util.mensagemErro("Parcelas não podem ser geradas novamente "
+                    + "por já existirem parcelas pagas!");
+        } else {
+            objeto.getListaParcelas().clear();
+            objeto.geraParcelas();
+            Util.mensagemInformacao("Parcelas geradas com sucesso!");
+        }
+               
     }
     public void salvar() {
         boolean persistiu;
